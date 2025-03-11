@@ -1,6 +1,6 @@
 <?php
 
-namespace begao\viet_qr_pay\constants;
+namespace cuongnm\viet_qr_pay\constants;
 
 use ReflectionClass;
 

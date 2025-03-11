@@ -1,12 +1,12 @@
 <?php
 
-use begao\viet_qr_pay\constants\AdditionalDataID;
-use begao\viet_qr_pay\constants\FieldID;
-use begao\viet_qr_pay\constants\ProviderFieldID;
-use begao\viet_qr_pay\constants\QRProvider;
-use begao\viet_qr_pay\constants\QRProviderGUID;
-use begao\viet_qr_pay\constants\VietQRConsumerFieldID;
-use begao\viet_qr_pay\constants\VietQRService;
+use cuongnm\viet_qr_pay\constants\AdditionalDataID;
+use cuongnm\viet_qr_pay\constants\FieldID;
+use cuongnm\viet_qr_pay\constants\ProviderFieldID;
+use cuongnm\viet_qr_pay\constants\QRProvider;
+use cuongnm\viet_qr_pay\constants\QRProviderGUID;
+use cuongnm\viet_qr_pay\constants\VietQRConsumerFieldID;
+use cuongnm\viet_qr_pay\constants\VietQRService;
 
 class QRPay {
     public bool $isValid = true;

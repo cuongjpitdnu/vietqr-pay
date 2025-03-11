@@ -1,6 +1,6 @@
 <?php
 
-use begao\viet_qr_pay\constants\QRProvider;
+use cuongnm\viet_qr_pay\constants\QRProvider;
 
 class Provider
 {
