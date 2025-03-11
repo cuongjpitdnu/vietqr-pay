@@ -1,0 +1,63 @@
+<?php
+
+namespace begao\viet_qr_pay\constants;
+
+class BankKey {
+    const ABBANK = 'abbank';
+    const ACB = 'acb';
+    const AGRIBANK = 'agribank';
+    const BAC_A_BANK = 'bacabank';
+    const BAOVIET_BANK = 'baoviet';
+    const BANVIET = 'banviet';
+    const BIDC = 'bidc';
+    const BIDV = 'bidv';
+    const CAKE = 'cake';
+    const CBBANK = 'cbbank';
+    const CIMB = 'cimb';
+    const COOP_BANK = 'coopbank';
+    const DBS_BANK = 'dbsbank';
+    const DONG_A_BANK = 'dongabank';
+    const EXIMBANK = 'eximbank';
+    const GPBANK = 'gpbank';
+    const HDBANK = 'hdbank';
+    const HONGLEONG_BANK = 'hongleongbank';
+    const HSBC = 'hsbc';
+    const IBK_HCM = 'ibkhcm';
+    const IBK_HN = 'ibkhn';
+    const INDOVINA_BANK = 'indovinabank';
+    const KASIKORN_BANK = 'kasikorn';
+    const KIENLONG_BANK = 'kienlongbank';
+    const KOOKMIN_BANK_HCM = 'kookminhcm';
+    const KOOKMIN_BANK_HN = 'kookminhn';
+    const LIENVIETPOST_BANK = 'lienvietpostbank';
+    const MBBANK = 'mbbank';
+    const MSB = 'msb';
+    const NAM_A_BANK = 'namabank';
+    const NCB = 'ncb';
+    const NONGHYUP_BANK_HN = 'nonghyup';
+    const OCB = 'ocb';
+    const OCEANBANK = 'oceanbank';
+    const PGBANK = 'pgbank';
+    const PUBLIC_BANK = 'publicbank';
+    const PVCOM_BANK = 'pvcombank';
+    const SACOMBANK = 'sacombank';
+    const SAIGONBANK = 'saigonbank';
+    const SCB = 'scb';
+    const SEA_BANK = 'seabank';
+    const SHB = 'shb';
+    const SHINHAN_BANK = 'shinhanbank';
+    const STANDARD_CHARTERED_BANK = 'standardcharteredbank';
+    const TECHCOMBANK = 'techcombank';
+    const TIMO = 'timo';
+    const TPBANK = 'tpbank';
+    const UBANK = 'ubank';
+    const UNITED_OVERSEAS_BANK = 'uob';
+    const VIB = 'vib';
+    const VIET_A_BANK = 'vietabank';
+    const VIET_BANK = 'vietbank';
+    const VIETCOMBANK = 'vietcombank';
+    const VIETINBANK = 'vietinbank';
+    const VPBANK = 'vpbank';
+    const VRB = 'vrb';
+    const WOORI_BANK = 'wooribank';
+}
