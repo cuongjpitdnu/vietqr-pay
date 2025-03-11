@@ -7,13 +7,13 @@ use cuongnm\viet_qr_pay\constants\QRProvider;
 class Provider
 {
     private ?string $fieldId;
-    private ?QRProvider $name;
+    private ?string $name;
     private ?string $guid;
     private ?string $service;
 
     public function __construct(
         ?string $fieldId = null,
-        ?QRProvider $name = null,
+        ?string $name = null,
         ?string $guid = null,
         ?string $service = null
     ) {
@@ -34,12 +34,12 @@ class Provider
         $this->fieldId = $fieldId;
     }
 
-    public function getName(): ?QRProvider
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function setName(?QRProvider $name): void
+    public function setName(?string $name): void
     {
         $this->name = $name;
     }
