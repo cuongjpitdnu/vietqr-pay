@@ -1,5 +1,7 @@
 <?php
 
+namespace cuongnm\viet_qr_pay;
+
 use cuongnm\viet_qr_pay\constants\QRProvider;
 
 class Provider

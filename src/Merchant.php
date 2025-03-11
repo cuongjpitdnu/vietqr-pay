@@ -1,5 +1,7 @@
 <?php
 
+namespace cuongnm\viet_qr_pay;
+
 class Merchant
 {
     private ?string $id;
