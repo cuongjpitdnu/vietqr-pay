@@ -393,8 +393,14 @@ class QRPay {
         $this->isValid = false;
     }
 
-    private static function genFieldData(string $fieldId, string $fieldValue): string {
-        $fieldLen = str_pad(strlen($fieldValue), 2, '0', STR_PAD_LEFT);
-        return $fieldId . $fieldLen . $fieldValue;
+    private static function genFieldData($fieldId = '', $fieldValue = ''): string {
+        $fieldId = $id ?? '';
+        $fieldValue = $value ?? '';
+        $idLen = strlen($fieldId);
+        if ($idLen !== 2 || strlen($fieldValue) <= 0) {
+            return '';
+        }
+        $length = str_pad(strlen($fieldValue), 2, '0', STR_PAD_LEFT);
+        return $fieldId . $length . $fieldValue;
     }
 }
