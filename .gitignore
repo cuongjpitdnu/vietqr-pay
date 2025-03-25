@@ -1,0 +1,14 @@
+# IDEs and editors
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# OS files
+.DS_Store
+Thumbs.db
+/vendor
+/.phpunit.result.cache
+/phpunit.xml

@@ -9,6 +9,11 @@ use cuongnm\viet_qr_pay\constants\QRProvider;
 use cuongnm\viet_qr_pay\constants\QRProviderGUID;
 use cuongnm\viet_qr_pay\constants\VietQRConsumerFieldID;
 use cuongnm\viet_qr_pay\constants\VietQRService;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\RoundBlockSizeMode;
+use Endroid\QrCode\Writer\PngWriter;
 
 class QRPay {
     public bool $isValid = true;
@@ -28,6 +33,7 @@ class QRPay {
     public ?string $zipCode = null;
     public AdditionalData $additionalData;
     public ?string $crc = null;
+    private $labels;
 
     /** @var array<string, string>|null */
     public ?array $EVMCo = null;
@@ -121,21 +127,44 @@ class QRPay {
         return $content . $crc;
     }
 
-    public static function initVNPAYQR(string $merchantId, string $amount, string $tipAndFeeType, string $tipAndFeeAmount, string $tipAndFeePercent): QRPay {
+    public static function initVNPAYQR(array $options): QRPay 
+    {
+        // Validate required fields
+        $requiredFields = ['merchantId', 'merchantName', 'store', 'terminal'];
+        foreach ($requiredFields as $field) {
+            if (!isset($options[$field])) {
+                throw new \InvalidArgumentException("Missing required field: {$field}");
+            }
+        }
+    
         $qr = new QRPay();
-        $qr->initMethod = '11';
+        
+        // Set required merchant info
+        $qr->merchant->setId($options['merchantId']);
+        $qr->merchant->setName($options['merchantName']);
+        
+        // Set provider info
         $qr->provider->setFieldId(FieldID::VNPAYQR);
         $qr->provider->setGuid(QRProviderGUID::VNPAY);
         $qr->provider->setName(QRProvider::VNPAY);
-        $qr->merchant->setId($merchantId);
-        $qr->amount = $amount;
-        $qr->tipAndFeeType = $tipAndFeeType;
-        $qr->tipAndFeeAmount = $tipAndFeeAmount;
-        $qr->tipAndFeePercent = $tipAndFeePercent;
+        
+        // Set amount if provided
+        $qr->amount = $options['amount'] ?? null;
+        
+        // Set additional data
+        $qr->additionalData->setPurpose($options['purpose'] ?? null);
+        $qr->additionalData->setBillNumber($options['billNumber'] ?? null);
+        $qr->additionalData->setMobileNumber($options['mobileNumber'] ?? null);
+        $qr->additionalData->setStore($options['store']);
+        $qr->additionalData->setTerminal($options['terminal']);
+        $qr->additionalData->setLoyaltyNumber($options['loyaltyNumber'] ?? null);
+        $qr->additionalData->setReference($options['reference'] ?? null);
+        $qr->additionalData->setCustomerLabel($options['customerLabel'] ?? null);
+    
         return $qr;
     }
 
-    public static function initVietQR(string $bankBin, string $bankNumber, string $amount = null, string $purpose = null , string $service = VietQRService::BY_ACCOUNT_NUMBER): QRPay {
+    public static function initVietQR(string $bankBin, string $bankNumber, ?string $amount = null, ?string $purpose = null , string $service = VietQRService::BY_ACCOUNT_NUMBER): QRPay {
         $qr = new QRPay();
         $qr->initMethod = $amount ? '12' : '11';
         $qr->provider->setFieldId(FieldID::VIETQR);
@@ -394,8 +423,8 @@ class QRPay {
     }
 
     private static function genFieldData($fieldId = '', $fieldValue = ''): string {
-        $fieldId = $id ?? '';
-        $fieldValue = $value ?? '';
+        $fieldId = $fieldId ?? '';
+        $fieldValue = $fieldValue ?? '';
         $idLen = strlen($fieldId);
         if ($idLen !== 2 || strlen($fieldValue) <= 0) {
             return '';
@@ -403,4 +432,65 @@ class QRPay {
         $length = str_pad(strlen($fieldValue), 2, '0', STR_PAD_LEFT);
         return $fieldId . $length . $fieldValue;
     }
+
+    public function generate_image(array $options = []): string
+    {
+        // Extract options with default values
+        $size = $options['size'] ?? 300;
+        $margin = $options['margin'] ?? 10;
+        $logoPath = $options['logoPath'] ?? null;
+        $logoWidth = $options['logoWidth'] ?? null;
+        $logoHeight = $options['logoHeight'] ?? null;
+
+        // Create QR builder with named arguments
+        $builder = new Builder(
+            writer: new PngWriter(),
+            writerOptions: [],
+            validateResult: false,
+            data: $this->build(),
+            encoding: new Encoding('UTF-8'),
+            errorCorrectionLevel: ErrorCorrectionLevel::High,
+            size: $size,
+            margin: $margin,
+            roundBlockSizeMode: RoundBlockSizeMode::Margin
+        );
+
+        // Add logo if path is provided
+        if (!empty($logoPath) && file_exists($logoPath)) {
+            $builder = new Builder(
+                // ...previous options...
+                logoPath: $logoPath,
+                logoResizeToWidth: $logoWidth,
+                logoResizeToHeight: $logoHeight
+            );
+        }
+
+        // Add labels if any exist
+        if (!empty($this->labels)) {
+            foreach ($this->labels as $label) {
+                $builder = new Builder(
+                    // ...previous options...
+                    labelText: $label->getText(),
+                    labelFont: $label->getFont(),
+                    labelAlignment: $label->getAlignment()
+                );
+            }
+        }
+
+        // Build and return data URI
+        $result = $builder->build();
+
+        // Directly output the QR code
+        // header('Content-Type: '.$result->getMimeType());
+        // echo $result->getString();
+
+        // Save it to a file
+        // $result->saveToFile(__DIR__.'/qrcode.png');
+
+        // Generate a data URI to include image data inline (i.e. inside an <img> tag)
+        return $result->getDataUri();
+
+    }   
+
+
 }
